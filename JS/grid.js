@@ -1,5 +1,5 @@
-const rows = 999; // No of rows
-const cols = 52; // No of columns
+const rows = 150; // No of rows
+const cols = 30; // No of columns
 
 // previous Clicked cell
 let previousClickedCell = "";
@@ -100,8 +100,8 @@ function returnDefauldata() {
 
 //create DB and graph for new sheet
 function createSheetDB_And_createGraphComponentMatrix() {
-  const sheetDB = [];
-  const graphComponentMatrix = [];
+  const sheetDB1 = [];
+  const graphComponentMatrix1 = [];
   for (let i = 0; i < rows; i++) {
     const sheetRow = [];
     const graphRow = [];
@@ -109,11 +109,11 @@ function createSheetDB_And_createGraphComponentMatrix() {
       sheetRow.push(returnDefauldata());
       graphRow.push([]);
     }
-    sheetDB.push(sheetRow);
-    graphComponentMatrix.push(graphRow);
+    sheetDB1.push(sheetRow);
+    graphComponentMatrix1.push(graphRow);
   }
-  collectedSheetDB.push(sheetDB);
-  collecteddGraphComponent.push(graphComponentMatrix);
+  collectedSheetDB.push(sheetDB1);
+  collecteddGraphComponent.push(graphComponentMatrix1);
 }
 
 // Add blur Event listener
@@ -720,8 +720,8 @@ function handleSheetActiveness(sheet) {
   sheet.addEventListener("click", (e) => {
     const sheetIndex = Number(sheet.getAttribute("id"));
     handleSheetDB(sheetIndex);
-    handleSheetProp();
     handleSheetUi(sheet);
+
   });
 }
 
@@ -731,12 +731,12 @@ function handleSheetDB(sheetIndex) {
 }
 
 function handleSheetProp() {
-  // for (let i = 0; i < rows; i++) {
-  //   for (let j = 0; j < cols; j++) {
-  //     const cell = document.querySelector(`.cell[rid="${i}"][cid="${j}"]`);
-  //     cell.click();
-  //   }
-  // }
+   for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < cols; j++) {
+      const cell = document.querySelector(`.cell[rid="${i}"][cid="${j}"]`);
+      cell.click();
+    }
+  }
   const firstCell = document.querySelector(".cell");
   firstCell.click();
   firstCell.style.border = `3px solid ${cellBorderColor}`;
@@ -748,6 +748,7 @@ function handleSheetUi(sheet) {
     allSheetFolder[i].style.backgroundColor = "transparent";
   }
   sheet.style.backgroundColor = activeSheetColor;
+  handleSheetProp();
 }
 
 function handlesheetRemoval(sheet) {
@@ -864,6 +865,7 @@ copybtn.addEventListener("click", (e) => {
     singleCellprop = cellprop;
     return;
   }
+
   for (let i = rangeStorage[0][0]; i <= rangeStorage[1][0]; i++) {
     const row = [];
     for (let j = rangeStorage[0][1]; j <= rangeStorage[1][1]; j++) {
@@ -871,6 +873,7 @@ copybtn.addEventListener("click", (e) => {
     }
     copyData.push(row);
   }
+  console.log(copyData)
   if (rangeStorage.length === 2) SelectCellborder(1, lightGray);
 });
 
@@ -891,14 +894,14 @@ pastebtn.addEventListener("click", (e) => {
     return;
   }
   for (
-    let i = rid, l = 0;
+    let i = rid, k = 0;
     i <= rid + Math.abs(rangeStorage[1][0] - rangeStorage[0][0]);
-    l++, i++
+    k++, i++
   ) {
     for (
-      let j = cid, k = 0;
+      let j = cid, l = 0;
       j <= cid + Math.abs(rangeStorage[1][1] - rangeStorage[0][1]);
-      j++, k++
+      j++, l++
     ) {
       const rangeCell = document.querySelector(`.cell[rid="${i}"][cid="${j}"]`);
       if (rangeCell) {
@@ -959,12 +962,11 @@ uploadbtn.addEventListener("click", (e) => {
       collectedSheetDB[collectedSheetDB.length - 1] = sheetDB;
       collecteddGraphComponent[collecteddGraphComponent.length - 1] =
         graphComponentMatrix;
-      handleSheetProp();
+        handleSheetProp();
     });
   });
 });
 {
   const addSheetBtn = document.querySelector(".sheet-add-icon");
   addSheetBtn.click();
-  handleSheetProp();
 }
